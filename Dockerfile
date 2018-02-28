@@ -24,10 +24,10 @@ RUN apt-get update && apt-get install -y binutils \
 			libssl-dev \
 			libxml2-dev \
 			tar \
-			wget
+			wget && apt-get autoremove -y && apt-get clean -y
 RUN mkdir -p /usr/local/root && cd /usr/local/root && wget https://root.cern.ch/download/root_v6.12.04.source.tar.gz && tar -zxvf root_v6.12.04.source.tar.gz -C /usr/local/root/ && \
     mkdir -p /usr/local/root/release && cd /usr/local/root/release && \
     cmake -Dbuiltin_xrootd=ON /usr/local/root/root-6.12.04 && \
     make && \
-    cd /usr/local/root && rm root_v6.12.04.source.tar.gz && rm -r /usr/local/root/root-6.12.04 && \
-    apt-get autoremove -y && apt-get clean -y
+    cd /usr/local/root && rm root_v6.12.04.source.tar.gz && rm -r /usr/local/root/root-6.12.04
+    
