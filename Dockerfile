@@ -1,10 +1,9 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 MAINTAINER taritree.wongjirad@tufts.edu
 
-RUN apt-get update && \
-    apt-get install -y binutils \
-	    	    	cmake \
+RUN apt-get update && apt-get install -y binutils \
+	    	      	cmake \
 			dpkg-dev \
 			libfftw3-dev \
 			gcc \
@@ -22,11 +21,13 @@ RUN apt-get update && \
 			python \
 			ipython-notebook \
 			python-dev \
+			libssl-dev \
+			libxml2-dev \
 			tar \
-			wget && \
-    wget https://root.cern.ch/download/root_v6.04.18.source.tar.gz && tar -zxvf root_v6.04.18.source.tar.gz -C /tmp/ && \
-    mkdir -p /tmp/build && cd /tmp/build && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DGNUINSTALL=ON /tmp/root-6.04.18 && \
-    cmake --build . --target install -- -j4 && \
-    rm /root_v6.04.18.source.tar.gz && rm -r /tmp/build && rm -r /tmp/root-6.04.18 && \
+			wget
+RUN mkdir -p /usr/local/root && cd /usr/local/root && wget https://root.cern.ch/download/root_v6.12.04.source.tar.gz && tar -zxvf root_v6.12.04.source.tar.gz -C /usr/local/root/ && \
+    mkdir -p /usr/local/root/release && cd /usr/local/root/release && \
+    cmake -Dbuiltin_xrootd=ON /usr/local/root/root-6.12.04 && \
+    make && \
+    cd /usr/local/root && rm root_v6.12.04.source.tar.gz && rm -r /usr/local/root/root-6.12.04 && \
     apt-get autoremove -y && apt-get clean -y
